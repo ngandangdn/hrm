@@ -1,284 +1,364 @@
-# HRM Project Overview
+# HiCAS HRM
 
-Đây là dự án HRM (Human Resource Management) được xây dựng theo kiến trúc full-stack:
+HiCAS HRM là hệ thống quản trị nhân sự full-stack dùng cho demo đồ án: quản lý hồ sơ nhân viên, nghỉ phép, chấm công, thông báo, tài sản, phòng họp và báo cáo thống kê.
 
-- Frontend: React + TypeScript + Vite
-- UI: Ant Design, Tailwind CSS
-- State/Data: Zustand, TanStack React Query, Axios
-- Backend: FastAPI + Python
-- Database layer: mô hình theo hướng repository/service, có khởi tạo CSDL khi chạy ở môi trường `dev`
+Dự án gồm:
 
-## Mục tiêu dự án
+- Frontend: React, TypeScript, Vite, Ant Design, Tailwind CSS, TanStack React Query, Zustand.
+- Backend: FastAPI, SQLModel, JWT, layered architecture theo `routers -> services -> repositories -> models`.
+- Database demo: SQLite local `demo_hicas.db`.
+- Database triển khai: MySQL qua biến môi trường `DB_URL`.
 
-Dự án được phát triển để xây dựng một nền tảng quản lý nhân sự có các nhóm chức năng chính:
+## Chạy Nhanh Demo
 
-- Quản lý hồ sơ nhân sự
-- Quản lý chấm công và bảng công
-- Quản lý nghỉ phép
-- Quản lý nghỉ việc
-- Phê duyệt nghiệp vụ
-- Phân quyền người dùng
-- Danh mục hệ thống
-- Thông báo
-- Quản lý tài sản
-- Báo cáo
+Khuyến nghị dùng cách này khi cần mở hệ thống ngay để test giao diện và luồng nghiệp vụ.
 
-## Những gì đã làm trong dự án
+### 1. Cài môi trường
 
-### 1. Khởi tạo nền tảng frontend
+Yêu cầu:
 
-- Dựng ứng dụng bằng Vite + React + TypeScript
-- Thiết lập `ReactDOM.createRoot` trong `src/main.tsx`
-- Bọc toàn bộ app bằng:
-  - `QueryClientProvider` cho React Query
-  - `ConfigProvider` của Ant Design
-- Cấu hình ngôn ngữ giao diện tiếng Việt cho Ant Design
-- Áp dụng theme tùy biến qua `src/theme/tokens.ts`
-- Tách CSS chính vào `src/styles.css`
+- Python 3.11 hoặc 3.12
+- Node.js 18+
+- npm
 
-### 2. Thiết lập điều hướng và layout
+Cài backend:
 
-- Tạo router tập trung trong `src/app/router.tsx`
-- Xây dựng layout chính và layout đăng nhập:
-  - `src/layouts/MainLayout.tsx`
-  - `src/layouts/AuthLayout.tsx`
-- Có bảo vệ route bằng `ProtectedRoute`
-- Có cơ chế tự đăng xuất khi không hoạt động thông qua `useIdleLogout`
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
 
-### 3. Xây dựng module xác thực
+Cài frontend:
 
-- Tạo màn hình đăng nhập tại `src/features/auth/LoginPage.tsx`
-- Tách type riêng cho auth trong `src/features/auth/types.ts`
-- Tách layer gọi API auth trong `src/features/auth/api.ts`
-- Có store xác thực bằng Zustand tại `src/stores/authStore.ts`
-- Backend có router, schema và service cho auth:
-  - `app/routers/auth_router.py`
-  - `app/schemas/auth_schema.py`
-  - `app/services/auth_service.py`
-  - `app/core/security.py`
+```powershell
+npm install
+```
 
-### 4. Xây dựng backend FastAPI
+### 2. Sinh dữ liệu mẫu
 
-- Tạo entrypoint backend tại `app/main.py`
-- Khởi tạo FastAPI app với CORS cho frontend chạy local
-- Thêm health check endpoint `/health`
-- Tự động init database khi môi trường là `dev`
-- Khởi động scheduler khi app lên
-- Tổ chức router theo từng nghiệp vụ
+Seed chính hiện tại nằm ở `seed/seed_data.py`. Script này tự tạo hoặc cập nhật database SQLite `demo_hicas.db`, đồng thời nạp đủ tài khoản, 20 hồ sơ nhân sự và dữ liệu cho các module demo.
 
-### 5. Tổ chức kiến trúc backend theo lớp
+```powershell
+$env:DB_URL = "sqlite:///./demo_hicas.db"
+$env:ENVIRONMENT = "seed"
+.\.venv\Scripts\python.exe -m seed.seed_data
+```
 
-Backend được chia tương đối rõ thành các lớp:
-
-- `models`: định nghĩa entity / bảng dữ liệu
-- `schemas`: định nghĩa dữ liệu vào/ra
-- `repositories`: thao tác dữ liệu
-- `services`: xử lý nghiệp vụ
-- `routers`: expose API
-- `core`: cấu hình hệ thống, database, scheduler, response, security, RBAC
-
-Các thành phần chính đã có:
-
-- `app/core/config.py`
-- `app/core/database.py`
-- `app/core/scheduler.py`
-- `app/core/rbac.py`
-- `app/core/response.py`
-- `app/core/security.py`
-
-### 6. Phát triển các phân hệ nghiệp vụ
-
-#### Hồ sơ nhân sự
-
-- Quản lý hồ sơ nhân viên
-- Quản lý hồ sơ cá nhân
-- Có luồng yêu cầu cập nhật hồ sơ
-
-Các file tiêu biểu:
-
-- `app/models/nhan_vien.py`
-- `app/models/ho_so.py`
-- `app/models/ho_so_ca_nhan.py`
-- `app/models/yeu_cau_cap_nhat_ho_so.py`
-- `app/services/ho_so_ca_nhan_service.py`
-- `app/services/yeu_cau_cap_nhat_service.py`
-
-#### Chấm công
-
-- Quản lý bảng công
-- Tính công tổng hợp
-- Tính công theo nguồn Redmine
-- Xem bảng công
-- Nhập công và duyệt bảng công
-
-Các thành phần tiêu biểu:
-
-- `app/models/bang_cong.py`
-- `app/services/cham_cong_scope.py`
-- `app/services/import_cham_cong_service.py`
-- `app/services/duyet_bang_cong_service.py`
-- `app/services/xem_bang_cong_service.py`
-- `app/utils/tinh_cong_tingop.py`
-- `app/utils/tinh_cong_redmine.py`
-- `app/routers/cham_cong_router.py`
-
-#### Nghỉ phép và nghỉ việc
-
-- Quản lý đơn nghỉ phép
-- Quản lý quỹ phép
-- Quản lý đơn nghỉ việc
-- Quản lý quyết định nghỉ việc
-
-Thành phần liên quan:
-
-- `app/models/don_nghi_phep.py`
-- `app/models/quy_phep.py`
-- `app/models/don_nghi_viec.py`
-- `app/models/quyet_dinh_nghi_viec.py`
-- `app/services/nghi_phep_service.py`
-- `app/services/nghi_viec_service.py`
-
-#### Phê duyệt
-
-- Xây dựng luồng phê duyệt nghiệp vụ
-- Tách riêng router và schema cho phê duyệt
-
-Thành phần tiêu biểu:
-
-- `app/routers/phe_duyet_router.py`
-- `app/schemas/phe_duyet_schema.py`
-- `app/services/phe_duyet_service.py`
-
-#### Phân quyền
-
-- Thiết kế vai trò và quyền
-- Mapping vai trò - quyền
-- Hỗ trợ RBAC trong backend
-
-Thành phần tiêu biểu:
-
-- `app/models/vai_tro.py`
-- `app/models/quyen.py`
-- `app/models/vai_tro_quyen.py`
-- `app/services/phan_quyen_service.py`
-- `app/core/rbac.py`
-
-#### Danh mục hệ thống
-
-- Chuẩn hóa dữ liệu danh mục dùng chung
-- Tách riêng schema, repository, service và router
-
-Thành phần tiêu biểu:
-
-- `app/schemas/danh_muc_schema.py`
-- `app/services/danh_muc_service.py`
-- `app/routers/danh_muc_router.py`
-
-#### Thông báo
-
-- Có mô hình thông báo
-- Có layer xử lý service/repository/router tương ứng
-
-Thành phần tiêu biểu:
-
-- `app/models/thong_bao.py`
-- `app/services/thong_bao_service.py`
-- `app/routers/thong_bao_router.py`
-
-#### Tài sản
-
-- Quản lý tài sản
-- Quản lý giao nhận tài sản
-- Có schema và service riêng
-
-Thành phần tiêu biểu:
-
-- `app/models/tai_san.py`
-- `app/models/giao_nhan_tai_san.py`
-- `app/services/tai_san_service.py`
-
-#### Báo cáo
-
-- Tạo lớp xử lý báo cáo
-- Có repository, service và router riêng cho báo cáo
-
-Thành phần tiêu biểu:
-
-- `app/repositories/bao_cao_repo.py`
-- `app/services/bao_cao_service.py`
-- `app/routers/bao_cao_router.py`
-- `app/utils/xuat_bao_cao.py`
-
-### 7. Cấu trúc phụ trợ
-
-- Có file `requirements.txt` cho backend Python
-- Có cấu hình `tailwind.config.js` và `postcss.config.js`
-- Có cấu hình TypeScript:
-  - `tsconfig.json`
-  - `tsconfig.node.json`
-- Có cấu hình build Vite trong `vite.config.ts`
-
-## Cấu trúc thư mục
+Khi chạy thành công sẽ thấy thông báo:
 
 ```text
-app/      # Backend FastAPI
-src/      # Frontend React + TypeScript
-dist/     # Build output frontend
+Seed data ready. Demo accounts: hcns/admin/quanly/nhanvien @hicas.com.vn, password Hicas@123
 ```
 
-## Cách chạy dự án
+### 3. Chạy backend
 
-## Đăng nhập demo
-
-Sau khi backend đã tạo bảng và đã import data mẫu trong [docs/demo-data.sql](docs/demo-data.sql), dùng một trong các tài khoản sau:
-
-| Vai trò | Email | Mật khẩu |
-| --- | --- | --- |
-| Admin | `admin@hicas.vn` | `Demo@123456` |
-| HCNS | `hcns@hicas.vn` | `Demo@123456` |
-| Nhân viên | `nhanvien@hicas.vn` | `Nhanvien@123456` |
-
-Hướng dẫn chạy đầy đủ và import data mẫu nằm tại [docs/huong-dan-su-dung.md](docs/huong-dan-su-dung.md).
-
-### Frontend
-
-```bash
-npm install
-npm run dev
+```powershell
+$env:DB_URL = "sqlite:///./demo_hicas.db"
+$env:ENVIRONMENT = "seed"
+.\.venv\Scripts\python.exe tools\run_demo_backend.py
 ```
 
-### Build frontend
+Backend chạy tại:
 
-```bash
+```text
+http://127.0.0.1:8000
+```
+
+Swagger/OpenAPI:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+Health check:
+
+```text
+http://127.0.0.1:8000/health
+```
+
+### 4. Chạy frontend
+
+Mở terminal khác:
+
+```powershell
+npm run dev -- --host 127.0.0.1 --port 5173
+```
+
+Mở trình duyệt:
+
+```text
+http://localhost:5173/dang-nhap
+```
+
+## Tài Khoản Demo
+
+Tất cả tài khoản seed chính dùng chung mật khẩu:
+
+```text
+Hicas@123
+```
+
+| Vai trò | Email | Mã nhân viên | Mục đích demo |
+| --- | --- | --- | --- |
+| Admin | `admin@hicas.com.vn` | `NV002` | Quản trị hệ thống, phân quyền, toàn quyền dữ liệu |
+| HCNS | `hcns@hicas.com.vn` | `NV001` | Quản lý hồ sơ, duyệt nghỉ phép, thông báo, tài sản, báo cáo |
+| Quản lý | `quanly@hicas.com.vn` | `NV003` | Xem dữ liệu theo vai trò quản lý, duyệt nghiệp vụ phù hợp |
+| Nhân viên | `nhanvien@hicas.com.vn` | `NV004` | Tạo đơn nghỉ phép, xem hồ sơ cá nhân, xem chấm công |
+
+Ngoài 4 tài khoản trên, seed còn tạo thêm các tài khoản nhân viên `NV005` đến `NV018` theo email trong hồ sơ nhân sự, cũng dùng mật khẩu `Hicas@123`. Hai hồ sơ `NV019`, `NV020` là nhân sự đã nghỉ nên tài khoản bị khóa.
+
+## Dữ Liệu Mẫu Có Sẵn
+
+Seed chính tạo dữ liệu đủ cho demo tổng thể:
+
+- 20 hồ sơ nhân sự, trong đó 18 đang làm việc và 2 đã nghỉ.
+- Hồ sơ có các trường mở rộng: ngành nghề, trình độ học vấn, chuyên môn, trường đào tạo, chuyên ngành, năm tốt nghiệp, kỹ năng nghề, chứng chỉ, ngoại ngữ, tin học, kinh nghiệm.
+- Hợp đồng lao động có link file mẫu trong `uploads/hopdong`.
+- Quỹ phép và đơn nghỉ phép theo nhiều trạng thái: chờ duyệt, đã duyệt, từ chối, hủy.
+- Bảng công tháng `07/2026` theo nhiều dự án, có tổng giờ logtime, giờ thực tế và số lần đi muộn.
+- Thông báo cá nhân và thông báo chưa đọc.
+- Tài sản, giao nhận tài sản, biên bản giao nhận/thu hồi mẫu.
+- Phòng họp, lịch họp, thành viên lịch họp và các trạng thái chờ duyệt/đã duyệt/từ chối/can thiệp.
+- Báo cáo thống kê tháng `07/2026` có số liệu thực tế hơn cho hành chính, hiệu suất, tổng hợp và quản trị.
+
+## Luồng Demo Gợi Ý
+
+### 1. Đăng nhập
+
+1. Mở `http://localhost:5173/dang-nhap`.
+2. Đăng nhập bằng `hcns@hicas.com.vn` / `Hicas@123`.
+3. Sau khi vào hệ thống, kiểm tra menu trái và thông tin người dùng trên thanh trên cùng.
+
+### 2. Hồ sơ nhân sự
+
+1. Vào `Hồ sơ nhân sự`.
+2. Kiểm tra danh sách 20 nhân sự bên trái.
+3. Chọn `Đặng Kim Ngân` hoặc một nhân sự bất kỳ.
+4. Xem thông tin chung, liên hệ, hợp đồng, trình độ, ngành nghề, kỹ năng và file hợp đồng.
+5. Dùng tài khoản nhân viên để kiểm tra phân quyền: nhân viên chỉ xem hồ sơ của chính mình.
+
+### 3. Nghỉ phép
+
+1. Đăng nhập tài khoản nhân viên `nhanvien@hicas.com.vn`.
+2. Vào `Nghỉ phép > Tạo đơn phép`.
+3. Tạo đơn nghỉ phép mới.
+4. Đăng xuất, đăng nhập HCNS `hcns@hicas.com.vn`.
+5. Vào `Nghỉ phép > Danh sách đơn`.
+6. Duyệt hoặc từ chối đơn vừa tạo.
+7. Kiểm tra `Bảng phép` để xem số ngày đã dùng/chờ duyệt.
+
+### 4. Chấm công
+
+1. Vào `Chấm công`.
+2. Chọn tháng `07/2026`.
+3. Xem bảng công, chi tiết bảng công, số giờ logtime, giờ thực tế, số lần đi muộn.
+4. Với tài khoản có quyền quản lý, vào màn duyệt/chốt bảng công nếu cần.
+
+File mẫu import chấm công có thể tạo bằng:
+
+```powershell
+.\.venv\Scripts\python.exe tools\create_cham_cong_import_templates.py
+```
+
+Sau khi chạy, kiểm tra các file mẫu sinh ra trong thư mục `docs` hoặc thư mục output mà script thông báo.
+
+### 5. Thông báo
+
+1. Vào `Thông báo`.
+2. Xem danh sách thông báo đã đọc/chưa đọc.
+3. Tạo thông báo mới nếu đăng nhập bằng HCNS/Admin.
+4. Kiểm tra badge số thông báo chưa đọc trên thanh điều hướng.
+
+### 6. Tài sản
+
+1. Vào `Tài sản`.
+2. Xem danh sách tài sản mẫu.
+3. Cấp phát tài sản cho nhân viên.
+4. Thu hồi tài sản và nhập tình trạng thu hồi.
+5. Kiểm tra lịch sử giao nhận/luân chuyển theo phân quyền.
+
+### 7. Phòng họp
+
+1. Vào `Phòng họp`.
+2. Tạo lịch họp mới, chọn phòng, thời gian và thành viên tham gia.
+3. Vào màn duyệt lịch họp bằng HCNS/Admin.
+4. Duyệt, từ chối hoặc can thiệp lịch họp.
+5. Kiểm tra danh sách thành viên trong lịch họp.
+
+### 8. Báo cáo thống kê
+
+1. Vào `Báo cáo`.
+2. Chọn kỳ `01/07/2026 - 31/07/2026`.
+3. Xem lần lượt 4 loại:
+   - Hành chính
+   - Hiệu suất
+   - Tổng hợp
+   - Quản trị
+4. Bấm `Xuất báo cáo` để tải Excel/PDF.
+
+Số liệu mẫu tháng `07/2026` hiện có:
+
+- Hành chính: 18 nhân viên đang làm, 2 đã nghỉ, 4 hợp đồng còn hiệu lực sắp hết hạn, 3 đơn nghỉ việc trong kỳ.
+- Hiệu suất: 7 dự án với tổng giờ công khác nhau.
+- Quản trị: 22 tài sản đang sử dụng, 10 sẵn sàng, 32 lượt luân chuyển, 7 phòng họp, 19 lịch họp trong kỳ.
+
+## Cấu Trúc Dự Án
+
+```text
+app/
+  core/            Cấu hình, database, JWT, RBAC, response chuẩn
+  models/          SQLModel models
+  repositories/    Truy vấn dữ liệu
+  services/        Business rules và xử lý nghiệp vụ
+  routers/         FastAPI routers
+  schemas/         Request/response schemas
+  utils/           Tiện ích import/export/tính toán
+
+src/
+  api/             API client frontend
+  app/             Router frontend
+  components/      Component dùng chung
+  features/        Module giao diện theo nghiệp vụ
+  layouts/         Layout đăng nhập và layout chính
+  stores/          Zustand stores
+
+seed/
+  seed_data.py     Seed dữ liệu demo chính
+
+tools/
+  run_demo_backend.py
+  create_cham_cong_import_templates.py
+
+uploads/
+  hopdong/         File hợp đồng mẫu upload/serve qua backend
+
+docs/
+  demo-data.sql    SQL demo cũ cho MySQL, chỉ dùng khi cần tham khảo/import thủ công
+```
+
+## Backend API Chính
+
+Một số nhóm endpoint:
+
+- `POST /api/auth/login`: đăng nhập.
+- `GET /api/ho-so-ca-nhan/*`: hồ sơ nhân sự/cá nhân.
+- `GET /api/nghi-phep/*`: nghỉ phép, quỹ phép, duyệt đơn.
+- `GET /api/cham-cong/*`: bảng công, import, giải trình, chốt công.
+- `GET /api/thong-bao/*`: thông báo.
+- `GET /api/tai-san/*`: tài sản, cấp phát, thu hồi, lịch sử.
+- `GET /api/danh-muc/*`: phòng họp, lịch họp, thành viên lịch họp.
+- `GET /api/bao-cao/*`: báo cáo thống kê và xuất file.
+
+Xem đầy đủ contract tại:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+## Chạy Với MySQL
+
+Nếu muốn dùng MySQL thay vì SQLite demo:
+
+1. Tạo database, ví dụ:
+
+```sql
+CREATE DATABASE datn_hrm0 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+2. Cấu hình biến môi trường:
+
+```powershell
+$env:DB_URL = "mysql+pymysql://root:password@localhost:3306/datn_hrm0"
+$env:ENVIRONMENT = "dev"
+```
+
+3. Chạy backend để tạo bảng:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+4. Seed dữ liệu vào MySQL:
+
+```powershell
+$env:DB_URL = "mysql+pymysql://root:password@localhost:3306/datn_hrm0"
+$env:ENVIRONMENT = "seed"
+.\.venv\Scripts\python.exe -m seed.seed_data
+```
+
+Lưu ý: `docs/demo-data.sql` là dữ liệu mẫu cũ, có thể không đầy đủ bằng `seed/seed_data.py`.
+
+## Build Frontend
+
+Kiểm tra TypeScript và build production:
+
+```powershell
 npm run build
 ```
 
-### Backend
-
-Tùy theo môi trường Python của bạn, cài dependencies từ `requirements.txt` rồi chạy ứng dụng FastAPI.
-
-## Ghi chú
-
-- Frontend đang dùng giao diện tiếng Việt theo Ant Design locale `vi_VN`
-- Backend có CORS cho `http://localhost:5173`
-
-## Demo data quick start
-
-Nếu MySQL local chưa import được ngay, chạy SQLite demo ngoài backend:
+Chạy preview build:
 
 ```powershell
-python tools/setup_demo_sqlite.py
-$env:DB_URL = "sqlite:///./demo_hicas.db"
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+npm run preview
 ```
 
-Mở frontend bằng `http://localhost:5173/dang-nhap`.
+## Lỗi Thường Gặp
 
-Tài khoản mẫu:
-- `admin@hicas.vn` / `Demo@123456`
-- `hcns@hicas.vn` / `Demo@123456`
-- `nhanvien@hicas.vn` / `Nhanvien@123456`
-- `nhanvien2@hicas.vn` / `Nhanvien@123456`
+### Không đăng nhập được
 
-Mã data mẫu hay dùng: `YC-DEMO-001`, `DNV-DEMO-001`, `DNV-DEMO-002`, `QDNV-DEMO-001`.
-- Dự án đang đi theo hướng module hóa rõ ràng để dễ mở rộng thêm các nghiệp vụ HRM khác
+Kiểm tra:
+
+- Backend có đang chạy ở `http://127.0.0.1:8000` không.
+- Frontend có chạy ở `http://localhost:5173` hoặc `http://127.0.0.1:5173` không.
+- Đã chạy seed chưa:
+
+```powershell
+$env:DB_URL = "sqlite:///./demo_hicas.db"
+$env:ENVIRONMENT = "seed"
+.\.venv\Scripts\python.exe -m seed.seed_data
+```
+
+- Dùng đúng tài khoản, ví dụ `hcns@hicas.com.vn` / `Hicas@123`.
+
+### Trang báo lỗi API hoặc không có dữ liệu
+
+Thử restart backend sau khi seed:
+
+```powershell
+$env:DB_URL = "sqlite:///./demo_hicas.db"
+$env:ENVIRONMENT = "seed"
+.\.venv\Scripts\python.exe tools\run_demo_backend.py
+```
+
+Sau đó bấm `Làm mới` trên giao diện.
+
+### Lỗi port đã được sử dụng
+
+Kiểm tra process đang chiếm port:
+
+```powershell
+netstat -ano | Select-String ":8000"
+netstat -ano | Select-String ":5173"
+```
+
+Nếu cần dừng process theo PID:
+
+```powershell
+Stop-Process -Id <PID> -Force
+```
+
+### Lỗi bcrypt/passlib
+
+Nếu gặp lỗi liên quan `bcrypt` khi đăng nhập, cài phiên bản tương thích:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install "bcrypt<4.1" --force-reinstall
+```
+
+## Ghi Chú Triển Khai
+
+- Backend đang expose file upload qua `/uploads`.
+- JWT secret mặc định trong code chỉ dùng cho demo local; khi triển khai thật cần đặt `JWT_SECRET` riêng.
+- Với báo cáo thống kê, backend query trực tiếp từ bảng nghiệp vụ tại thời điểm gọi API, không dùng bảng cache.
+- Dữ liệu demo ưu tiên `seed/seed_data.py`; nếu cập nhật seed, hãy chạy lại script và restart backend.
+
