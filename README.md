@@ -1,6 +1,6 @@
 # HiCAS HRM
 
-HiCAS HRM là hệ thống quản trị nhân sự full-stack dùng cho demo đồ án: quản lý hồ sơ nhân viên, nghỉ phép, chấm công, thông báo, tài sản, phòng họp và báo cáo thống kê.
+HiCAS HRM là hệ thống quản trị nhân sự dùng cho demo đồ án: quản lý hồ sơ nhân viên, nghỉ phép, chấm công, thông báo, tài sản, phòng họp và báo cáo thống kê.
 
 Dự án gồm:
 
@@ -106,20 +106,6 @@ Hicas@123
 | Nhân viên | `nhanvien@hicas.com.vn` | `NV004` | Tạo đơn nghỉ phép, xem hồ sơ cá nhân, xem chấm công |
 
 Ngoài 4 tài khoản trên, seed còn tạo thêm các tài khoản nhân viên `NV005` đến `NV018` theo email trong hồ sơ nhân sự, cũng dùng mật khẩu `Hicas@123`. Hai hồ sơ `NV019`, `NV020` là nhân sự đã nghỉ nên tài khoản bị khóa.
-
-## Dữ Liệu Mẫu Có Sẵn
-
-Seed chính tạo dữ liệu đủ cho demo tổng thể:
-
-- 20 hồ sơ nhân sự, trong đó 18 đang làm việc và 2 đã nghỉ.
-- Hồ sơ có các trường mở rộng: ngành nghề, trình độ học vấn, chuyên môn, trường đào tạo, chuyên ngành, năm tốt nghiệp, kỹ năng nghề, chứng chỉ, ngoại ngữ, tin học, kinh nghiệm.
-- Hợp đồng lao động có link file mẫu trong `uploads/hopdong`.
-- Quỹ phép và đơn nghỉ phép theo nhiều trạng thái: chờ duyệt, đã duyệt, từ chối, hủy.
-- Bảng công tháng `07/2026` theo nhiều dự án, có tổng giờ logtime, giờ thực tế và số lần đi muộn.
-- Thông báo cá nhân và thông báo chưa đọc.
-- Tài sản, giao nhận tài sản, biên bản giao nhận/thu hồi mẫu.
-- Phòng họp, lịch họp, thành viên lịch họp và các trạng thái chờ duyệt/đã duyệt/từ chối/can thiệp.
-- Báo cáo thống kê tháng `07/2026` có số liệu thực tế hơn cho hành chính, hiệu suất, tổng hợp và quản trị.
 
 ## Luồng Demo Gợi Ý
 
@@ -319,46 +305,3 @@ $env:ENVIRONMENT = "seed"
 ```
 
 - Dùng đúng tài khoản, ví dụ `hcns@hicas.com.vn` / `Hicas@123`.
-
-### Trang báo lỗi API hoặc không có dữ liệu
-
-Thử restart backend sau khi seed:
-
-```powershell
-$env:DB_URL = "sqlite:///./demo_hicas.db"
-$env:ENVIRONMENT = "seed"
-.\.venv\Scripts\python.exe tools\run_demo_backend.py
-```
-
-Sau đó bấm `Làm mới` trên giao diện.
-
-### Lỗi port đã được sử dụng
-
-Kiểm tra process đang chiếm port:
-
-```powershell
-netstat -ano | Select-String ":8000"
-netstat -ano | Select-String ":5173"
-```
-
-Nếu cần dừng process theo PID:
-
-```powershell
-Stop-Process -Id <PID> -Force
-```
-
-### Lỗi bcrypt/passlib
-
-Nếu gặp lỗi liên quan `bcrypt` khi đăng nhập, cài phiên bản tương thích:
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install "bcrypt<4.1" --force-reinstall
-```
-
-## Ghi Chú Triển Khai
-
-- Backend đang expose file upload qua `/uploads`.
-- JWT secret mặc định trong code chỉ dùng cho demo local; khi triển khai thật cần đặt `JWT_SECRET` riêng.
-- Với báo cáo thống kê, backend query trực tiếp từ bảng nghiệp vụ tại thời điểm gọi API, không dùng bảng cache.
-- Dữ liệu demo ưu tiên `seed/seed_data.py`; nếu cập nhật seed, hãy chạy lại script và restart backend.
-
