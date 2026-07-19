@@ -307,10 +307,3 @@ Stop-Process -Id <PID> -Force
 ```
 
 Sau đó restart backend.
-
-## Ghi Chú
-
-- File `.venv`, `node_modules`, `dist`, log và cache không nằm trong cấu trúc nguồn. Có thể tạo lại bằng các lệnh cài đặt ở trên.
-- Backend serve file upload từ `Backend/uploads` qua endpoint `/uploads`.
-- Dữ liệu demo chính nằm ở `Database/seed/seed_data.py`.
-- Không dùng các file launcher tạm kiểu `.codex-run-*.cmd`; thay bằng script rõ tên trong `Scripts/`.
