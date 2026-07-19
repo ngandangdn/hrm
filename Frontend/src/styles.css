@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, Arial, sans-serif;
+  color: #0f172a;
+  background: #f3f6fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #f3f6fb;
+}
+
+.ant-layout {
+  background: #f3f6fb;
+}
+
+.hicas-card {
+  border: 1px solid #d9e2ef;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
+}
+
+.hicas-icon-tile {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  place-items: center;
+  border-radius: 8px;
+  background: #edf3ff;
+  color: #3454d1;
+}
+
+.hicas-section {
+  border: 1px solid #d9e2ef;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.hicas-tabs .ant-tabs-nav {
+  margin: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid #d9e2ef;
+  background: #ffffff;
+}
+
+.hicas-tabs .ant-tabs-tab {
+  padding: 16px 2px;
+  font-weight: 600;
+}
+
+.hicas-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #3454d1;
+}

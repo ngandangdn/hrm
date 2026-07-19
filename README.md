@@ -1,61 +1,104 @@
 # HiCAS HRM
 
-HiCAS HRM là hệ thống quản trị nhân sự dùng cho demo đồ án: quản lý hồ sơ nhân viên, nghỉ phép, chấm công, thông báo, tài sản, phòng họp và báo cáo thống kê.
+HiCAS HRM là hệ thống quản trị nhân sự full-stack dùng cho demo đồ án. Hệ thống hỗ trợ hồ sơ nhân sự, nghỉ phép, nghỉ việc, chấm công, thông báo, tài sản, phòng họp và báo cáo thống kê.
 
-Dự án gồm:
+## Cấu Trúc Thư Mục
 
-- Frontend: React, TypeScript, Vite, Ant Design, Tailwind CSS, TanStack React Query, Zustand.
-- Backend: FastAPI, SQLModel, JWT, layered architecture theo `routers -> services -> repositories -> models`.
-- Database demo: SQLite local `demo_hicas.db`.
-- Database triển khai: MySQL qua biến môi trường `DB_URL`.
+```text
+HRM/
+  Backend/       Mã nguồn FastAPI, requirements, file upload runtime
+  Frontend/      Mã nguồn React/Vite, package.json, cấu hình UI
+  Database/      Database SQLite demo, seed data, template import/xuất mẫu
+  Scripts/       Script PowerShell để seed/chạy backend/chạy frontend
+  README.md      Hướng dẫn sử dụng
+```
+
+Chi tiết:
+
+```text
+Backend/
+  app/
+    core/
+    models/
+    repositories/
+    routers/
+    schemas/
+    services/
+    utils/
+  tools/run_demo_backend.py
+  uploads/
+  requirements.txt
+
+Frontend/
+  src/
+  index.html
+  package.json
+  package-lock.json
+  vite.config.ts
+  tsconfig.json
+  tailwind.config.js
+
+Database/
+  demo_hicas.db
+  seed/seed_data.py
+  templates/
+    HopDongLaoDong_052026HiCAS.pdf
+    mau_import_cham_cong_redmine.xlsx
+    mau_import_cham_cong_tingop.xlsx
+  tools/create_cham_cong_import_templates.py
+```
 
 ## Chạy Nhanh Demo
 
-Khuyến nghị dùng cách này khi cần mở hệ thống ngay để test giao diện và luồng nghiệp vụ.
+### 1. Cài Backend
 
-### 1. Cài môi trường
-
-Yêu cầu:
-
-- Python 3.11 hoặc 3.12
-- Node.js 18+
-- npm
-
-Cài backend:
+Tại thư mục gốc `HRM/`:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r Backend\requirements.txt
 ```
 
-Cài frontend:
+Nếu gặp lỗi `bcrypt/passlib` khi đăng nhập:
 
 ```powershell
+.\.venv\Scripts\python.exe -m pip install "bcrypt<4.1" --force-reinstall
+```
+
+### 2. Cài Frontend
+
+```powershell
+cd Frontend
 npm install
+cd ..
 ```
 
-### 2. Sinh dữ liệu mẫu
-
-Seed chính hiện tại nằm ở `seed/seed_data.py`. Script này tự tạo hoặc cập nhật database SQLite `demo_hicas.db`, đồng thời nạp đủ tài khoản, 20 hồ sơ nhân sự và dữ liệu cho các module demo.
+### 3. Seed Dữ Liệu Mẫu
 
 ```powershell
-$env:DB_URL = "sqlite:///./demo_hicas.db"
-$env:ENVIRONMENT = "seed"
-.\.venv\Scripts\python.exe -m seed.seed_data
+.\Scripts\seed_database.ps1
 ```
 
-Khi chạy thành công sẽ thấy thông báo:
-
-```text
-Seed data ready. Demo accounts: hcns/admin/quanly/nhanvien @hicas.com.vn, password Hicas@123
-```
-
-### 3. Chạy backend
+Nếu PowerShell báo `running scripts is disabled`, chạy dạng:
 
 ```powershell
-$env:DB_URL = "sqlite:///./demo_hicas.db"
-$env:ENVIRONMENT = "seed"
-.\.venv\Scripts\python.exe tools\run_demo_backend.py
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File Scripts\seed_database.ps1
+```
+
+Script này tạo/cập nhật `Database/demo_hicas.db` và nạp dữ liệu mẫu đầy đủ cho demo.
+
+### 4. Chạy Backend
+
+Mở terminal thứ nhất tại thư mục gốc:
+
+```powershell
+.\Scripts\run_backend.ps1
+```
+
+Nếu PowerShell chặn script:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File Scripts\run_backend.ps1
 ```
 
 Backend chạy tại:
@@ -64,27 +107,27 @@ Backend chạy tại:
 http://127.0.0.1:8000
 ```
 
-Swagger/OpenAPI:
+Swagger:
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
-Health check:
+### 5. Chạy Frontend
 
-```text
-http://127.0.0.1:8000/health
-```
-
-### 4. Chạy frontend
-
-Mở terminal khác:
+Mở terminal thứ hai tại thư mục gốc:
 
 ```powershell
-npm run dev -- --host 127.0.0.1 --port 5173
+.\Scripts\run_frontend.ps1
 ```
 
-Mở trình duyệt:
+Nếu PowerShell chặn script:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File Scripts\run_frontend.ps1
+```
+
+Frontend chạy tại:
 
 ```text
 http://localhost:5173/dang-nhap
@@ -92,160 +135,126 @@ http://localhost:5173/dang-nhap
 
 ## Tài Khoản Demo
 
-Tất cả tài khoản seed chính dùng chung mật khẩu:
+Mật khẩu chung:
 
 ```text
 Hicas@123
 ```
 
-| Vai trò | Email | Mã nhân viên | Mục đích demo |
+| Vai trò | Email | Mã nhân viên | Ghi chú |
 | --- | --- | --- | --- |
-| Admin | `admin@hicas.com.vn` | `NV002` | Quản trị hệ thống, phân quyền, toàn quyền dữ liệu |
-| HCNS | `hcns@hicas.com.vn` | `NV001` | Quản lý hồ sơ, duyệt nghỉ phép, thông báo, tài sản, báo cáo |
-| Quản lý | `quanly@hicas.com.vn` | `NV003` | Xem dữ liệu theo vai trò quản lý, duyệt nghiệp vụ phù hợp |
-| Nhân viên | `nhanvien@hicas.com.vn` | `NV004` | Tạo đơn nghỉ phép, xem hồ sơ cá nhân, xem chấm công |
+| Admin | `admin@hicas.com.vn` | `NV002` | Quản trị hệ thống, phân quyền |
+| HCNS | `hcns@hicas.com.vn` | `NV001` | Quản lý nhân sự, duyệt, báo cáo |
+| Quản lý | `quanly@hicas.com.vn` | `NV003` | Luồng quản lý cấp trung |
+| Nhân viên | `nhanvien@hicas.com.vn` | `NV004` | Luồng nhân viên tự phục vụ |
 
-Ngoài 4 tài khoản trên, seed còn tạo thêm các tài khoản nhân viên `NV005` đến `NV018` theo email trong hồ sơ nhân sự, cũng dùng mật khẩu `Hicas@123`. Hai hồ sơ `NV019`, `NV020` là nhân sự đã nghỉ nên tài khoản bị khóa.
+Seed còn có các tài khoản nhân viên `NV005` đến `NV018`, dùng email trong hồ sơ nhân sự và cùng mật khẩu `Hicas@123`. Hai hồ sơ `NV019`, `NV020` là nhân sự đã nghỉ nên tài khoản bị khóa.
+
+## Dữ Liệu Mẫu
+
+Dữ liệu trong `Database/seed/seed_data.py` gồm:
+
+- 20 hồ sơ nhân sự.
+- 18 nhân sự đang làm việc, 2 nhân sự đã nghỉ.
+- Hồ sơ có ngành nghề, trình độ học vấn, chuyên môn, trường học, kỹ năng, chứng chỉ, ngoại ngữ, tin học, kinh nghiệm.
+- Hợp đồng lao động có link file mẫu.
+- Quỹ phép, đơn nghỉ phép chờ duyệt/đã duyệt/từ chối/hủy.
+- Bảng công tháng `07/2026` theo nhiều dự án.
+- Thông báo cá nhân và thông báo chưa đọc.
+- Tài sản, cấp phát, thu hồi, biên bản giao nhận.
+- Phòng họp, lịch họp, thành viên lịch họp, luồng duyệt/từ chối/can thiệp.
+- Báo cáo thống kê tháng `07/2026` với số liệu demo thực tế hơn.
 
 ## Luồng Demo Gợi Ý
 
-### 1. Đăng nhập
+### Hồ Sơ Nhân Sự
 
-1. Mở `http://localhost:5173/dang-nhap`.
-2. Đăng nhập bằng `hcns@hicas.com.vn` / `Hicas@123`.
-3. Sau khi vào hệ thống, kiểm tra menu trái và thông tin người dùng trên thanh trên cùng.
+1. Đăng nhập `hcns@hicas.com.vn`.
+2. Vào `Hồ sơ nhân sự`.
+3. Kiểm tra danh sách 20 nhân sự.
+4. Chọn một nhân sự để xem thông tin cá nhân, liên hệ, học vấn, kỹ năng, hợp đồng và file hợp đồng.
 
-### 2. Hồ sơ nhân sự
+### Nghỉ Phép
 
-1. Vào `Hồ sơ nhân sự`.
-2. Kiểm tra danh sách 20 nhân sự bên trái.
-3. Chọn `Đặng Kim Ngân` hoặc một nhân sự bất kỳ.
-4. Xem thông tin chung, liên hệ, hợp đồng, trình độ, ngành nghề, kỹ năng và file hợp đồng.
-5. Dùng tài khoản nhân viên để kiểm tra phân quyền: nhân viên chỉ xem hồ sơ của chính mình.
-
-### 3. Nghỉ phép
-
-1. Đăng nhập tài khoản nhân viên `nhanvien@hicas.com.vn`.
+1. Đăng nhập `nhanvien@hicas.com.vn`.
 2. Vào `Nghỉ phép > Tạo đơn phép`.
-3. Tạo đơn nghỉ phép mới.
-4. Đăng xuất, đăng nhập HCNS `hcns@hicas.com.vn`.
+3. Tạo đơn nghỉ phép.
+4. Đăng nhập `hcns@hicas.com.vn`.
 5. Vào `Nghỉ phép > Danh sách đơn`.
-6. Duyệt hoặc từ chối đơn vừa tạo.
-7. Kiểm tra `Bảng phép` để xem số ngày đã dùng/chờ duyệt.
+6. Duyệt hoặc từ chối đơn.
 
-### 4. Chấm công
+### Chấm Công
 
-1. Vào `Chấm công`.
-2. Chọn tháng `07/2026`.
-3. Xem bảng công, chi tiết bảng công, số giờ logtime, giờ thực tế, số lần đi muộn.
-4. Với tài khoản có quyền quản lý, vào màn duyệt/chốt bảng công nếu cần.
+1. Đăng nhập HCNS hoặc Quản lý.
+2. Vào `Chấm công`.
+3. Chọn tháng `07/2026`.
+4. Xem bảng công, chi tiết bảng công, số giờ logtime, giờ thực tế, số lần đi muộn.
 
-File mẫu import chấm công có thể tạo bằng:
+Tạo lại file mẫu import chấm công:
 
 ```powershell
-.\.venv\Scripts\python.exe tools\create_cham_cong_import_templates.py
+.\Scripts\create_attendance_templates.ps1
 ```
 
-Sau khi chạy, kiểm tra các file mẫu sinh ra trong thư mục `docs` hoặc thư mục output mà script thông báo.
+File được tạo trong `Database/templates/`.
 
-### 5. Thông báo
-
-1. Vào `Thông báo`.
-2. Xem danh sách thông báo đã đọc/chưa đọc.
-3. Tạo thông báo mới nếu đăng nhập bằng HCNS/Admin.
-4. Kiểm tra badge số thông báo chưa đọc trên thanh điều hướng.
-
-### 6. Tài sản
+### Tài Sản
 
 1. Vào `Tài sản`.
-2. Xem danh sách tài sản mẫu.
+2. Xem danh sách tài sản.
 3. Cấp phát tài sản cho nhân viên.
 4. Thu hồi tài sản và nhập tình trạng thu hồi.
-5. Kiểm tra lịch sử giao nhận/luân chuyển theo phân quyền.
+5. Kiểm tra lịch sử giao nhận theo phân quyền.
 
-### 7. Phòng họp
+### Phòng Họp
 
 1. Vào `Phòng họp`.
-2. Tạo lịch họp mới, chọn phòng, thời gian và thành viên tham gia.
+2. Tạo lịch họp mới, chọn phòng và thành viên.
 3. Vào màn duyệt lịch họp bằng HCNS/Admin.
 4. Duyệt, từ chối hoặc can thiệp lịch họp.
-5. Kiểm tra danh sách thành viên trong lịch họp.
 
-### 8. Báo cáo thống kê
+### Báo Cáo
 
 1. Vào `Báo cáo`.
 2. Chọn kỳ `01/07/2026 - 31/07/2026`.
-3. Xem lần lượt 4 loại:
+3. Xem 4 loại báo cáo:
    - Hành chính
    - Hiệu suất
    - Tổng hợp
    - Quản trị
-4. Bấm `Xuất báo cáo` để tải Excel/PDF.
+4. Xuất Excel/PDF nếu cần.
 
-Số liệu mẫu tháng `07/2026` hiện có:
+Số liệu mẫu kỳ `07/2026`:
 
-- Hành chính: 18 nhân viên đang làm, 2 đã nghỉ, 4 hợp đồng còn hiệu lực sắp hết hạn, 3 đơn nghỉ việc trong kỳ.
-- Hiệu suất: 7 dự án với tổng giờ công khác nhau.
-- Quản trị: 22 tài sản đang sử dụng, 10 sẵn sàng, 32 lượt luân chuyển, 7 phòng họp, 19 lịch họp trong kỳ.
+- 18 nhân viên đang làm.
+- 2 nhân viên đã nghỉ.
+- 4 hợp đồng còn hiệu lực sắp hết hạn.
+- 3 đơn nghỉ việc trong kỳ.
+- 7 dự án có dữ liệu chấm công.
+- 22 tài sản đang sử dụng.
+- 10 tài sản sẵn sàng.
+- 19 lịch họp trong kỳ.
 
-## Cấu Trúc Dự Án
+## Build Và Kiểm Tra
 
-```text
-app/
-  core/            Cấu hình, database, JWT, RBAC, response chuẩn
-  models/          SQLModel models
-  repositories/    Truy vấn dữ liệu
-  services/        Business rules và xử lý nghiệp vụ
-  routers/         FastAPI routers
-  schemas/         Request/response schemas
-  utils/           Tiện ích import/export/tính toán
+Frontend:
 
-src/
-  api/             API client frontend
-  app/             Router frontend
-  components/      Component dùng chung
-  features/        Module giao diện theo nghiệp vụ
-  layouts/         Layout đăng nhập và layout chính
-  stores/          Zustand stores
-
-seed/
-  seed_data.py     Seed dữ liệu demo chính
-
-tools/
-  run_demo_backend.py
-  create_cham_cong_import_templates.py
-
-uploads/
-  hopdong/         File hợp đồng mẫu upload/serve qua backend
-
-docs/
-  demo-data.sql    SQL demo cũ cho MySQL, chỉ dùng khi cần tham khảo/import thủ công
+```powershell
+cd Frontend
+npm run build
 ```
 
-## Backend API Chính
+Backend import check:
 
-Một số nhóm endpoint:
-
-- `POST /api/auth/login`: đăng nhập.
-- `GET /api/ho-so-ca-nhan/*`: hồ sơ nhân sự/cá nhân.
-- `GET /api/nghi-phep/*`: nghỉ phép, quỹ phép, duyệt đơn.
-- `GET /api/cham-cong/*`: bảng công, import, giải trình, chốt công.
-- `GET /api/thong-bao/*`: thông báo.
-- `GET /api/tai-san/*`: tài sản, cấp phát, thu hồi, lịch sử.
-- `GET /api/danh-muc/*`: phòng họp, lịch họp, thành viên lịch họp.
-- `GET /api/bao-cao/*`: báo cáo thống kê và xuất file.
-
-Xem đầy đủ contract tại:
-
-```text
-http://127.0.0.1:8000/docs
+```powershell
+.\.venv\Scripts\python.exe -c "import sys; sys.path.insert(0, 'Backend'); import app.main; print('backend ok')"
 ```
 
 ## Chạy Với MySQL
 
-Nếu muốn dùng MySQL thay vì SQLite demo:
+SQLite demo là luồng khuyến nghị để demo nhanh. Nếu cần MySQL:
 
-1. Tạo database, ví dụ:
+1. Tạo database:
 
 ```sql
 CREATE DATABASE datn_hrm0 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -258,10 +267,10 @@ $env:DB_URL = "mysql+pymysql://root:password@localhost:3306/datn_hrm0"
 $env:ENVIRONMENT = "dev"
 ```
 
-3. Chạy backend để tạo bảng:
+3. Chạy backend:
 
 ```powershell
-.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+.\.venv\Scripts\python.exe Backend\tools\run_demo_backend.py
 ```
 
 4. Seed dữ liệu vào MySQL:
@@ -269,39 +278,39 @@ $env:ENVIRONMENT = "dev"
 ```powershell
 $env:DB_URL = "mysql+pymysql://root:password@localhost:3306/datn_hrm0"
 $env:ENVIRONMENT = "seed"
-.\.venv\Scripts\python.exe -m seed.seed_data
-```
-
-Lưu ý: `docs/demo-data.sql` là dữ liệu mẫu cũ, có thể không đầy đủ bằng `seed/seed_data.py`.
-
-## Build Frontend
-
-Kiểm tra TypeScript và build production:
-
-```powershell
-npm run build
-```
-
-Chạy preview build:
-
-```powershell
-npm run preview
+.\.venv\Scripts\python.exe Database\seed\seed_data.py
 ```
 
 ## Lỗi Thường Gặp
 
-### Không đăng nhập được
+### Không Đăng Nhập Được
 
 Kiểm tra:
 
-- Backend có đang chạy ở `http://127.0.0.1:8000` không.
-- Frontend có chạy ở `http://localhost:5173` hoặc `http://127.0.0.1:5173` không.
-- Đã chạy seed chưa:
+- Backend đang chạy tại `http://127.0.0.1:8000`.
+- Frontend đang chạy tại `http://localhost:5173`.
+- Đã chạy `.\Scripts\seed_database.ps1`.
+- Dùng đúng tài khoản, ví dụ `hcns@hicas.com.vn` / `Hicas@123`.
+
+### Port Đã Được Sử Dụng
 
 ```powershell
-$env:DB_URL = "sqlite:///./demo_hicas.db"
-$env:ENVIRONMENT = "seed"
-.\.venv\Scripts\python.exe -m seed.seed_data
+netstat -ano | Select-String ":8000"
+netstat -ano | Select-String ":5173"
+Stop-Process -Id <PID> -Force
 ```
 
-- Dùng đúng tài khoản, ví dụ `hcns@hicas.com.vn` / `Hicas@123`.
+### Muốn Làm Mới Lại Data Demo
+
+```powershell
+.\Scripts\seed_database.ps1
+```
+
+Sau đó restart backend.
+
+## Ghi Chú
+
+- File `.venv`, `node_modules`, `dist`, log và cache không nằm trong cấu trúc nguồn. Có thể tạo lại bằng các lệnh cài đặt ở trên.
+- Backend serve file upload từ `Backend/uploads` qua endpoint `/uploads`.
+- Dữ liệu demo chính nằm ở `Database/seed/seed_data.py`.
+- Không dùng các file launcher tạm kiểu `.codex-run-*.cmd`; thay bằng script rõ tên trong `Scripts/`.

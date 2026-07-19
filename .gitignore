@@ -1,9 +1,29 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Frontend
+Frontend/node_modules/
+Frontend/dist/
+Frontend/*.tsbuildinfo
 node_modules/
 dist/
-*.tsbuildinfo
-vite.config.js
-vite.config.d.ts
+
+# Environment
 .env
 .env.*
-__pycache__/
-node_modules
+
+# Runtime logs and temp files
+*.log
+tmp_*
+backend-*.out
+backend-*.err
+frontend-*.out
+frontend-*.err
+uvicorn-test.*
+launcher-test.log
+
+# Local Codex launchers
+.codex-run-*.cmd
+
