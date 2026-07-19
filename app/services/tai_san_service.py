@@ -29,6 +29,26 @@ class TaiSanService:
         self.tai_san_repo = TaiSanRepository(session)
         self.giao_nhan_repo = GiaoNhanTaiSanRepository(session)
 
+    def list_tai_san(self, current_user: TaiKhoan) -> list:
+        self._assert_can_manage_assets(current_user)
+        return self.tai_san_repo.list_all()
+
+    def list_tai_san_cua_toi(self, current_user: TaiKhoan) -> list:
+        rows = self.giao_nhan_repo.list_by_nhan_vien(current_user.id_TaiKhoan)
+        result = []
+        for row in rows:
+            ts = self.tai_san_repo.get(row.id_TaiSan)
+            if ts:
+                result.append({
+                    "id_GiaoNhan": row.id_GiaoNhan,
+                    "id_TaiSan": ts.id_TaiSan,
+                    "tenTaiSan": ts.tenTaiSan,
+                    "serialNumber": ts.serialNumber,
+                    "ngayCapPhat": row.ngayCapPhat,
+                    "tinhTrangBanGiao": row.tinhTrangBanGiao,
+                })
+        return result
+
     def cap_phat(
         self,
         payload: CapPhatRequest,

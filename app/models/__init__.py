@@ -15,6 +15,7 @@ from app.models.quyen import Quyen
 from app.models.quyet_dinh_nghi_viec import QuyetDinhNghiViec
 from app.models.tai_khoan import TaiKhoan
 from app.models.tai_san import TaiSan
+from app.models.thanh_vien_lich_hop import ThanhVienLichHop
 from app.models.thong_bao import ThongBao
 from app.models.vai_tro import VaiTro
 from app.models.vai_tro_quyen import VaiTroQuyen
@@ -36,6 +37,7 @@ __all__ = [
     "QuyetDinhNghiViec",
     "TaiKhoan",
     "TaiSan",
+    "ThanhVienLichHop",
     "ThongBao",
     "VaiTro",
     "VaiTroQuyen",

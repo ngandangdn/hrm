@@ -1,4 +1,4 @@
-import { ConfigProvider } from 'antd';
+import { App as AntdApp, ConfigProvider } from 'antd';
 import viVN from 'antd/locale/vi_VN';
 import type { ReactNode } from 'react';
 
@@ -11,7 +11,7 @@ type AppProps = {
 export default function App({ children }: AppProps) {
   return (
     <ConfigProvider locale={viVN} theme={antdTheme}>
-      {children}
+      <AntdApp>{children}</AntdApp>
     </ConfigProvider>
   );
 }

@@ -22,6 +22,17 @@ class GiaoNhanTaiSanRepository:
         )
         return list(self.session.exec(statement).all())
 
+    def list_by_nhan_vien(self, id_nhan_vien: str) -> list[GiaoNhanTaiSan]:
+        statement = (
+            select(GiaoNhanTaiSan)
+            .where(
+                GiaoNhanTaiSan.id_NhanVien == id_nhan_vien,
+                GiaoNhanTaiSan.ngayThuHoi.is_(None)
+            )
+            .order_by(GiaoNhanTaiSan.ngayCapPhat.desc())
+        )
+        return list(self.session.exec(statement).all())
+
     def get_current_by_tai_san(self, id_tai_san: str, for_update: bool = False) -> GiaoNhanTaiSan | None:
         statement = select(GiaoNhanTaiSan).where(
             GiaoNhanTaiSan.id_TaiSan == id_tai_san,

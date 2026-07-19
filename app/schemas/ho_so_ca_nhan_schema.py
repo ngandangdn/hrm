@@ -21,6 +21,18 @@ class LienHe(BaseModel):
 
 class CongViec(BaseModel):
     chucVu: str
+    nganhNghe: str | None = None
+    trinhDoHocVan: str | None = None
+    trinhDoChuyenMon: str | None = None
+    truongDaoTao: str | None = None
+    chuyenNganh: str | None = None
+    namTotNghiep: int | None = None
+    kyNangNghe: str | None = None
+    chungChiNghe: str | None = None
+    bacKyNangNghe: str | None = None
+    ngoaiNgu: str | None = None
+    tinHoc: str | None = None
+    kinhNghiemLamViec: str | None = None
 
 
 class HopDongHienHanh(BaseModel):
@@ -37,3 +49,29 @@ class HoSoCaNhanResponse(BaseModel):
     lien_he: LienHe
     cong_viec: CongViec
     hop_dong: HopDongHienHanh | None
+
+
+class NhanVienHoSoListItem(BaseModel):
+    id_NhanVien: str
+    hoTen: str
+    email: str
+    sdt: str
+    gioiTinh: str
+    ngaySinh: date
+    cccd: str
+    maSoThue: str | None
+    diaChi: str | None
+    chucVu: str
+    nganhNghe: str | None = None
+    trinhDoHocVan: str | None = None
+    trinhDoChuyenMon: str | None = None
+    truongDaoTao: str | None = None
+    chuyenNganh: str | None = None
+    namTotNghiep: int | None = None
+    kyNangNghe: str | None = None
+    chungChiNghe: str | None = None
+    bacKyNangNghe: str | None = None
+    ngoaiNgu: str | None = None
+    tinHoc: str | None = None
+    kinhNghiemLamViec: str | None = None
+    trangThaiLamViec: int

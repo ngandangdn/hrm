@@ -33,6 +33,15 @@ class DonGiaiTrinhCongRepository:
         )
         return list(self.session.exec(statement).all())
 
+    def list_pending_for_bang_cong_ids(self, id_bang_cong_list: list[str]) -> list[DonGiaiTrinhCong]:
+        if not id_bang_cong_list:
+            return []
+        statement = select(DonGiaiTrinhCong).where(
+            DonGiaiTrinhCong.id_BangCong.in_(id_bang_cong_list),
+            DonGiaiTrinhCong.trangThai == 0,
+        )
+        return list(self.session.exec(statement).all())
+
     def list_pending_all(self) -> list[DonGiaiTrinhCong]:
         return list(
             self.session.exec(

@@ -10,17 +10,21 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
   SettingOutlined,
-  TeamOutlined,
   UsergroupAddOutlined,
   UserOutlined,
   WalletOutlined,
+  DesktopOutlined,
 } from '@ant-design/icons';
-import { Avatar, Badge, Button, Dropdown, Input, Layout, Menu, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Dropdown, Input, Layout, Menu, Typography } from 'antd';
 import type { ReactNode } from 'react';
 import { useMemo, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { useIdleLogout } from '@/components/common/useIdleLogout';
+import { canViewBaoCao } from '@/features/bao-cao/utils';
+import { canModerateLichHop } from '@/features/phong-hop/utils';
+import { ThongBaoDropdown } from '@/features/thong-bao';
+import { canCreateThongBao } from '@/features/thong-bao/utils';
 import { useAuthStore } from '@/stores/authStore';
 
 const { Header, Sider, Content } = Layout;
@@ -30,24 +34,84 @@ type MenuItem = {
   key: string;
   label: string;
   icon: ReactNode;
-  disabled?: boolean;
+  children?: MenuItem[];
   requiredRole?: string[];
 };
 
 const menuItems: MenuItem[] = [
   { key: '/', label: 'Trang chủ', icon: <HomeOutlined /> },
-  { key: '/ho-so', label: 'Hồ sơ nhân sự', icon: <UserOutlined />, disabled: true },
-  { key: '/nghi-phep', label: 'Nghỉ phép', icon: <CalendarOutlined />, disabled: true },
-  { key: '/cham-cong', label: 'Chấm công', icon: <AppstoreOutlined />, disabled: true },
-  { key: '/thong-bao', label: 'Thông báo', icon: <BellOutlined />, disabled: true },
-  { key: '/quan-ly-nhan-su', label: 'Quản lý nhân sự', icon: <TeamOutlined />, disabled: true },
-  { key: '/tai-san', label: 'Tài sản', icon: <WalletOutlined />, disabled: true },
-  { key: '/phong-hop', label: 'Phòng họp', icon: <UsergroupAddOutlined />, disabled: true },
-  { key: '/bao-cao', label: 'Báo cáo', icon: <BarChartOutlined />, disabled: true },
+  {
+    key: '/he-thong',
+    label: 'Quản lý hệ thống',
+    icon: <SettingOutlined />,
+    children: [
+      { key: '/he-thong/phan-quyen', label: 'Phân quyền', icon: <SettingOutlined /> },
+      { key: '/he-thong/duyet-yeu-cau', label: 'Duyệt yêu cầu', icon: <UsergroupAddOutlined /> },
+    ],
+  },
+  { key: '/ho-so', label: 'Hồ sơ nhân sự', icon: <UserOutlined /> },
+  {
+    key: '/nghi-viec',
+    label: 'Nghỉ việc',
+    icon: <UsergroupAddOutlined />,
+    children: [
+      { key: '/nghi-viec/don-cua-toi', label: 'Đơn của tôi', icon: <UsergroupAddOutlined /> },
+      { key: '/nghi-viec/xu-ly', label: 'Xử lý đơn', icon: <UsergroupAddOutlined /> },
+    ],
+  },
+  {
+    key: '/nghi-phep',
+    label: 'Nghỉ phép',
+    icon: <CalendarOutlined />,
+    children: [
+      { key: '/nghi-phep/bang-phep', label: 'Bảng phép', icon: <CalendarOutlined /> },
+      { key: '/nghi-phep/tao-don', label: 'Tạo đơn phép', icon: <CalendarOutlined /> },
+      { key: '/nghi-phep/danh-sach-don', label: 'Danh sách đơn', icon: <CalendarOutlined /> },
+    ],
+  },
+  {
+    key: '/cham-cong',
+    label: 'Chấm công',
+    icon: <AppstoreOutlined />,
+    children: [
+      { key: '/cham-cong/bang-cong', label: 'Bảng chấm công', icon: <AppstoreOutlined /> },
+      { key: '/cham-cong/duyet', label: 'Duyệt bảng công', icon: <AppstoreOutlined /> },
+    ],
+  },
+  {
+    key: '/thong-bao-menu',
+    label: 'Thông báo',
+    icon: <BellOutlined />,
+    children: [
+      { key: '/thong-bao', label: 'Tất cả thông báo', icon: <BellOutlined /> },
+      { key: '/thong-bao/tao-moi', label: 'Tạo mới', icon: <BellOutlined />, requiredRole: ['CAN_CREATE_THONG_BAO'] },
+    ],
+  },
+  { key: '/bao-cao', label: 'Báo cáo', icon: <BarChartOutlined />, requiredRole: ['CAN_VIEW_BAO_CAO'] },
+  {
+    key: '/tai-san',
+    label: 'Tài sản',
+    icon: <DesktopOutlined />,
+    children: [
+      { key: '/tai-san/cua-toi', label: 'Tài sản của tôi', icon: <DesktopOutlined /> },
+      { key: '/tai-san/quan-ly', label: 'Quản lý tài sản', icon: <DesktopOutlined /> },
+    ],
+  },
+  {
+    key: '/phong-hop-menu',
+    label: 'Phòng họp',
+    icon: <UsergroupAddOutlined />,
+    children: [
+      { key: '/phong-hop', label: 'Lịch họp', icon: <UsergroupAddOutlined /> },
+      { key: '/phong-hop/dat-lich', label: 'Đặt lịch', icon: <CalendarOutlined /> },
+      { key: '/phong-hop/duyet', label: 'Duyệt lịch họp', icon: <UsergroupAddOutlined />, requiredRole: ['CAN_MODERATE_LICH_HOP'] },
+    ],
+  },
 ];
 
 export default function MainLayout() {
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
@@ -55,20 +119,29 @@ export default function MainLayout() {
 
   const antdMenuItems = useMemo(
     () =>
-      menuItems.map((item) => ({
-        key: item.key,
-        icon: item.icon,
-        disabled: item.disabled,
-        label: item.disabled ? (
-          <Tooltip title="Sắp ra mắt" placement="right">
-            <span>{item.label}</span>
-          </Tooltip>
-        ) : (
-          item.label
-        ),
-      })),
-    [],
+      menuItems
+        .filter((item) => !item.requiredRole?.includes('CAN_VIEW_BAO_CAO') || canViewBaoCao(user?.id_VaiTro))
+        .map((item) => ({
+          key: item.key,
+          icon: item.icon,
+          label: item.label,
+          children: item.children
+            ?.filter((child) => !child.requiredRole?.includes('CAN_CREATE_THONG_BAO') || canCreateThongBao(user?.id_VaiTro))
+            .filter((child) => !child.requiredRole?.includes('CAN_MODERATE_LICH_HOP') || canModerateLichHop(user?.id_VaiTro))
+            .map((child) => ({
+              key: child.key,
+              icon: child.icon,
+              label: child.label,
+            })),
+        })),
+    [user?.id_VaiTro],
   );
+
+  const flatMenuItems = menuItems.flatMap((item) => [item, ...(item.children ?? [])]);
+  const selectedMenuKey =
+    [...flatMenuItems]
+      .sort((left, right) => right.key.length - left.key.length)
+      .find((item) => item.key !== '/' && location.pathname.startsWith(item.key))?.key ?? '/';
 
   return (
     <Layout className="min-h-screen">
@@ -94,11 +167,12 @@ export default function MainLayout() {
 
           <Menu
             mode="inline"
-            selectedKeys={['/']}
+            selectedKeys={[selectedMenuKey]}
+            defaultOpenKeys={['/he-thong', '/nghi-phep']}
             items={antdMenuItems}
             className="border-none px-4 text-base"
             onClick={({ key }) => {
-              if (key === '/') navigate('/');
+              navigate(key);
             }}
           />
 
@@ -107,10 +181,11 @@ export default function MainLayout() {
               mode="inline"
               selectable={false}
               items={[
-                { key: 'danh-muc', icon: <AppstoreOutlined />, label: 'Danh mục', disabled: true },
-                { key: 'cai-dat', icon: <SettingOutlined />, label: 'Cài đặt', disabled: true },
+                { key: 'danh-muc', icon: <AppstoreOutlined />, label: 'Danh mục' },
+                { key: 'cai-dat', icon: <SettingOutlined />, label: 'Cài đặt' },
               ]}
               className="border-none text-base"
+              onClick={({ key }) => navigate(key === 'danh-muc' ? '/danh-muc/phong-hop' : '/he-thong/phan-quyen')}
             />
           </div>
         </div>
@@ -137,9 +212,7 @@ export default function MainLayout() {
               placeholder="Tìm kiếm nhân sự, tài liệu..."
               className="hidden w-[320px] rounded-full lg:flex"
             />
-            <Badge dot>
-              <BellOutlined className="text-xl" />
-            </Badge>
+            <ThongBaoDropdown compact />
             <QuestionCircleOutlined className="text-xl" />
             <Dropdown
               menu={{
@@ -158,7 +231,7 @@ export default function MainLayout() {
             >
               <button className="flex cursor-pointer items-center gap-3 border-none bg-transparent">
                 <div className="hidden text-right md:block">
-                  <div className="text-base font-semibold">{user?.email ?? 'Nguyễn Văn A'}</div>
+                  <div className="text-base font-semibold">{user?.email ?? 'Đặng Kim Ngân'}</div>
                   <Text className="text-sm text-hicas-muted">{user?.id_VaiTro ?? 'Trưởng phòng Nhân sự'}</Text>
                 </div>
                 <Avatar size={44} className="bg-hicas-primary">
@@ -176,3 +249,4 @@ export default function MainLayout() {
     </Layout>
   );
 }
+

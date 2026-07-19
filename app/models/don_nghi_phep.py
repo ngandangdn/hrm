@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from datetime import date, datetime
 from typing import TYPE_CHECKING
 
@@ -34,5 +32,5 @@ class DonNghiPhep(SQLModel, table=True):
         sa_column=Column(NVARCHAR(50), ForeignKey("QuyPhep.id_QuyPhep"), nullable=False)
     )
 
-    nhan_vien: "NhanVien | None" = Relationship(back_populates="don_nghi_phep_list")
+    nhan_vien: "NhanVien" = Relationship(back_populates="don_nghi_phep_list")
     quy_phep: "QuyPhep" = Relationship(back_populates="don_nghi_phep_list")

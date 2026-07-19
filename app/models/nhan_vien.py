@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from datetime import date
 from typing import TYPE_CHECKING
 
@@ -40,6 +38,18 @@ class NhanVien(SQLModel, table=True):
     cccd: str = Field(sa_column=Column(NVARCHAR(20), nullable=False, unique=True))
     trangThaiLamViec: int = Field(default=1, nullable=False)
     chucVu: str = Field(sa_column=Column(NVARCHAR(100), nullable=False))
+    nganhNghe: str | None = Field(default=None, sa_column=Column(NVARCHAR(150)))
+    trinhDoHocVan: str | None = Field(default=None, sa_column=Column(NVARCHAR(100)))
+    trinhDoChuyenMon: str | None = Field(default=None, sa_column=Column(NVARCHAR(150)))
+    truongDaoTao: str | None = Field(default=None, sa_column=Column(NVARCHAR(150)))
+    chuyenNganh: str | None = Field(default=None, sa_column=Column(NVARCHAR(150)))
+    namTotNghiep: int | None = Field(default=None)
+    kyNangNghe: str | None = Field(default=None, sa_column=Column(NVARCHAR(500)))
+    chungChiNghe: str | None = Field(default=None, sa_column=Column(NVARCHAR(255)))
+    bacKyNangNghe: str | None = Field(default=None, sa_column=Column(NVARCHAR(100)))
+    ngoaiNgu: str | None = Field(default=None, sa_column=Column(NVARCHAR(255)))
+    tinHoc: str | None = Field(default=None, sa_column=Column(NVARCHAR(255)))
+    kinhNghiemLamViec: str | None = Field(default=None, sa_column=Column(NVARCHAR(255)))
 
     tai_khoan: "TaiKhoan" = Relationship(back_populates="nhan_vien")
     hop_dong_list: list["HopDong"] = Relationship(back_populates="nhan_vien")

@@ -64,11 +64,7 @@ class BaoCaoService:
         if current_user.id_VaiTro in SENIOR_REPORT_ROLE_IDS:
             return
         if current_user.id_VaiTro in MIDDLE_REPORT_ROLE_IDS:
-            # BR24-2: cấp trung bị giới hạn phạm vi; DB chưa có scope dự án nên không tự cho xem toàn công ty.
-            raise HTTPException(
-                status.HTTP_403_FORBIDDEN,
-                "Chưa có cấu hình phạm vi dự án cho quản lý cấp trung",
-            )
+            return
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Bạn không có quyền xem báo cáo thống kê")
 
     def _to_chart(self, rows: list[dict]) -> list[dict]:

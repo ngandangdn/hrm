@@ -28,7 +28,12 @@ class DuyetBangCongService:
         else:
             # BR19-1: chưa có cơ chế phạm vi quản lý từ B4, nên quản lý không được xem người khác.
             bang_cong_list = self.bang_cong_repo.list_by_employee(current_user.id_TaiKhoan)
-        pending = self.don_repo.list_pending_all()
+        allowed_bang_cong_ids = [item.id_BangCong for item in bang_cong_list]
+        pending = (
+            self.don_repo.list_pending_all()
+            if is_hcns_or_admin(current_user)
+            else self.don_repo.list_pending_for_bang_cong_ids(allowed_bang_cong_ids)
+        )
         return {"bang_cong": bang_cong_list, "don_giai_trinh_cho_duyet": pending}
 
     def approve_explanation(

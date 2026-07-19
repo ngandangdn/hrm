@@ -14,6 +14,10 @@ class TaiSanRepository:
             statement = statement.with_for_update()
         return self.session.exec(statement).first()
 
+    def list_all(self) -> list[TaiSan]:
+        statement = select(TaiSan).order_by(TaiSan.id_TaiSan)
+        return list(self.session.exec(statement).all())
+
     def get_nhan_vien(self, id_nhan_vien: str) -> NhanVien | None:
         return self.session.get(NhanVien, id_nhan_vien)
 

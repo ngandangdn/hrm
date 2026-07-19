@@ -1,0 +1,112 @@
+
+> hicas-hrm-frontend@0.1.0 dev
+> vite --host 127.0.0.1 --port 5173
+
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m5609[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[2m11:56:08[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m11:57:32[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx[22m
+[2m11:57:33[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx[22m
+[2m11:57:54[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/ho-so/HoSoNhanSuPage.tsx[22m
+[2m12:19:37[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/cham-cong/ChamCongPage.tsx, /src/features/cham-cong/DuyetBangCongPage.tsx[22m
+[2m12:20:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/ChamCongPage.tsx, /src/styles.css, /src/features/cham-cong/DuyetBangCongPage.tsx[22m
+[2m12:20:15[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/ChamCongPage.tsx, /src/styles.css, /src/features/cham-cong/DuyetBangCongPage.tsx[22m
+[2m12:20:34[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/ChamCongPage.tsx, /src/styles.css[22m
+[2m12:21:50[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/ChamCongPage.tsx[22m
+[2m12:21:52[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/ChamCongPage.tsx[22m
+[2m12:22:10[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/DuyetBangCongPage.tsx, /src/styles.css[22m
+[2m12:23:03[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/DuyetBangCongPage.tsx[22m
+[2m12:23:04[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/DuyetBangCongPage.tsx[22m
+[2m12:29:30[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/cham-cong/ChamCongPage.tsx, /src/features/cham-cong/DuyetBangCongPage.tsx[22m
+[2m12:29:50[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/DuyetBangCongPage.tsx, /src/styles.css[22m
+[2m12:35:21[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/ChamCongPage.tsx, /src/styles.css[22m
+[2m16:34:12[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/thong-bao/index.ts[22m
+[2m16:37:33[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/thong-bao/index.ts[22m
+[2m16:37:34[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/thong-bao/index.ts[22m
+[2m16:37:49[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/app/router.tsx[22m
+[2m16:38:27[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m16:38:56[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m16:39:10[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m16:39:30[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m16:52:01[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/bao-cao/index.ts[22m
+[2m16:56:40[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/bao-cao/index.ts[22m
+[2m16:56:58[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/app/router.tsx[22m
+[2m16:57:24[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m16:58:00[22m [36m[1m[vite][22m[39m [32m✨ new dependencies optimized: [33mrecharts[32m[39m
+[2m16:58:00[22m [36m[1m[vite][22m[39m [32m✨ optimized dependencies changed. reloading[39m
+[2m17:02:01[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/bao-cao/BaoCaoPage.tsx, /src/styles.css[22m
+[2m17:16:47[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/bao-cao/BaoCaoPage.tsx, /src/styles.css[22m
+[2m17:34:43[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/phong-hop/index.ts[22m
+[2m17:34:48[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/phong-hop/index.ts[22m
+[2m17:35:29[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/app/router.tsx[22m
+[2m17:35:30[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/app/router.tsx[22m
+[2m17:36:11[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m17:36:13[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m17:36:51[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m17:37:06[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m17:37:25[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m17:37:55[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/phong-hop/DuyetLichHopPage.tsx, /src/features/phong-hop/SuaLichHopPage.tsx, /src/features/phong-hop/LichHopListPage.tsx, /src/features/phong-hop/TrangThaiLichHopTag.tsx, /src/layouts/MainLayout.tsx[22m
+[2m18:02:31[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/phong-hop/types.ts[22m
+[2m18:02:32[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/phong-hop/types.ts[22m
+[2m18:02:37[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/phong-hop/DangKyHopPage.tsx, /src/features/phong-hop/DuyetLichHopPage.tsx, /src/features/phong-hop/SuaLichHopPage.tsx, /src/features/phong-hop/LichHopListPage.tsx[22m
+[2m18:02:38[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/phong-hop/DangKyHopPage.tsx, /src/features/phong-hop/DuyetLichHopPage.tsx, /src/features/phong-hop/SuaLichHopPage.tsx, /src/features/phong-hop/LichHopListPage.tsx[22m
+[2m18:02:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/phong-hop/ChonThanhVienSelect.tsx, /src/styles.css[22m
+[2m18:02:47[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/phong-hop/DangKyHopPage.tsx, /src/styles.css[22m
+[2m18:02:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/phong-hop/LichHopListPage.tsx, /src/styles.css[22m
+[2m18:02:58[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/phong-hop/SuaLichHopPage.tsx, /src/styles.css[22m
+[2m18:03:15[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/app/router.tsx[22m
+[2m18:05:16[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/bao-cao/BaoCaoPage.tsx, /src/features/bao-cao/ExportModal.tsx, /src/features/bao-cao/charts/common.tsx, /src/layouts/MainLayout.tsx[22m
+[2m18:05:21[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/bao-cao/BaoCaoPage.tsx, /src/styles.css, /src/features/bao-cao/ExportModal.tsx, /src/features/bao-cao/charts/common.tsx, /src/layouts/MainLayout.tsx[22m
+[2m18:05:30[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/bao-cao/charts/common.tsx, /src/styles.css[22m
+[2m18:05:36[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/bao-cao/charts/common.tsx[22m
+[2m18:05:45[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/bao-cao/ExportModal.tsx, /src/styles.css[22m
+[2m18:05:51[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/bao-cao/ExportModal.tsx[22m
+[2m18:06:47[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/bao-cao/BaoCaoPage.tsx, /src/styles.css[22m
+[2m18:06:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/bao-cao/BaoCaoPage.tsx[22m
+[2m18:07:50[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/common/DashboardPlaceholder.tsx, /src/styles.css[22m
+[2m18:07:56[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/common/DashboardPlaceholder.tsx[22m
+[2m18:14:49[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/phong-hop/DangKyHopPage.tsx, /src/features/phong-hop/DuyetLichHopPage.tsx, /src/features/phong-hop/SuaLichHopPage.tsx, /src/features/phong-hop/LichHopListPage.tsx[22m
+[2m18:14:49[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/phong-hop/DangKyHopPage.tsx, /src/features/phong-hop/DuyetLichHopPage.tsx, /src/features/phong-hop/SuaLichHopPage.tsx, /src/features/phong-hop/LichHopListPage.tsx[22m
+[2m19:22:35[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m19:22:41[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/thong-bao/TaoThongBaoPage.tsx, /src/features/thong-bao/ThongBaoDropdown.tsx, /src/features/thong-bao/ThongBaoListPage.tsx, /src/layouts/MainLayout.tsx[22m
+[2m19:22:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/he-thong/PhanQuyenPage.tsx, /src/styles.css[22m
+[2m19:22:51[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/common/DashboardPlaceholder.tsx, /src/styles.css[22m
+[2m19:22:56[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css[22m
+[2m19:23:00[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/nghi-viec/XuLyNghiViecPage.tsx, /src/styles.css[22m
+[2m19:33:10[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/ho-so/types.ts[22m
+[2m19:33:11[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/ho-so/types.ts[22m
+[2m19:33:16[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/ho-so/HoSoNhanSuPage.tsx[22m
+[2m19:33:17[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/ho-so/HoSoNhanSuPage.tsx[22m
+[2m19:34:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m19:34:52[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx[22m
+[2m20:28:47[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/ho-so/HoSoNhanSuPage.tsx[22m
+[2m20:29:05[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m20:29:22[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m20:29:35[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m20:29:48[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m20:30:05[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m20:40:19[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/phong-hop/types.ts[22m
+[2m20:40:21[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/phong-hop/types.ts[22m
+[2m20:40:40[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css, /src/features/phong-hop/DangKyHopPage.tsx, /src/features/phong-hop/DuyetLichHopPage.tsx, /src/features/phong-hop/SuaLichHopPage.tsx, /src/features/phong-hop/LichHopListPage.tsx[22m
+[2m20:40:57[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/phong-hop/DuyetLichHopPage.tsx, /src/styles.css[22m
+[2m20:41:36[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/phong-hop/DuyetLichHopPage.tsx[22m
+[2m20:41:52[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/phong-hop/LichHopListPage.tsx, /src/styles.css[22m
+[2m20:42:27[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/phong-hop/DangKyHopPage.tsx, /src/styles.css[22m
+[2m20:42:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/phong-hop/SuaLichHopPage.tsx, /src/styles.css[22m
+[2m20:44:30[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/nghi-phep/BangPhepPage.tsx, /src/styles.css[22m
+[2m20:44:50[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/nghi-phep/TaoDonPhepPage.tsx, /src/styles.css[22m
+[2m20:51:09[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m20:51:37[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/thong-bao/ThongBaoListPage.tsx, /src/styles.css[22m
+[2m20:51:52[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/thong-bao/TaoThongBaoPage.tsx, /src/styles.css[22m
+[2m20:52:20[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/ChamCongPage.tsx, /src/styles.css[22m
+[2m20:52:36[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/nghi-phep/ChiTietDonPhepPage.tsx, /src/styles.css[22m
+[2m20:52:51[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/nghi-phep/DanhSachDonPhepPage.tsx, /src/styles.css[22m
+[2m20:53:12[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/bao-cao/BaoCaoPage.tsx, /src/styles.css[22m
+[2m20:54:38[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/cham-cong/DuyetBangCongPage.tsx, /src/styles.css[22m
+[2m21:00:42[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/features/ho-so/types.ts[22m
+[2m21:00:57[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m21:01:20[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/features/ho-so/HoSoNhanSuPage.tsx, /src/styles.css[22m
+[2m21:13:04[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/MainLayout.tsx, /src/styles.css, /src/features/bao-cao/charts/common.tsx, /src/features/bao-cao/ExportModal.tsx, /src/features/bao-cao/BaoCaoPage.tsx[22m

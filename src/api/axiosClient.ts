@@ -7,7 +7,8 @@ export const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
-  // Step 1: read the single source of auth state from Zustand, not directly from localStorage.
+  // getState() is Zustand's API for reading state outside the React tree (interceptors, utilities...).
+  // Do not call useAuthStore() here because hooks only belong inside React components/hooks.
   const token = useAuthStore.getState().accessToken;
   // Step 2: attach the Bearer token only when it exists.
   if (token) {

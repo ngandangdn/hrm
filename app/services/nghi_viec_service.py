@@ -5,9 +5,11 @@ from uuid import uuid4
 from fastapi import HTTPException, status
 from sqlmodel import Session
 
+from app.core.rbac import HCNS_ROLE_IDS
 from app.core.scheduler import schedule_employee_deactivation
 from app.models.don_nghi_viec import DonNghiViec
 from app.models.quyet_dinh_nghi_viec import QuyetDinhNghiViec
+from app.models.tai_khoan import TaiKhoan
 from app.repositories.nghi_viec_repo import NghiViecRepository
 from app.schemas.nghi_viec_schema import DonNghiViecCreate, QuyetDinhNghiViecCreate
 
@@ -52,6 +54,12 @@ class NghiViecService:
         if don is None:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Không tìm thấy đơn nghỉ việc")
         return don
+
+    def list_don(self, current_user: TaiKhoan) -> list[DonNghiViec]:
+        """Return list of resignation requests. HCNS sees all, others see their own."""
+        if current_user.id_VaiTro in HCNS_ROLE_IDS:
+            return self.repo.list_don()
+        return self.repo.list_don(id_nhan_vien=current_user.id_TaiKhoan)
 
     def create_quyet_dinh(self, payload: QuyetDinhNghiViecCreate) -> QuyetDinhNghiViec:
         """Validate and issue a resignation decision, then schedule effective deactivation."""

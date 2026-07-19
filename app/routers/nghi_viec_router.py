@@ -12,6 +12,15 @@ from app.services.nghi_viec_service import NghiViecService
 router = APIRouter(prefix="/api/nghi-viec", tags=["Nghi viec"])
 
 
+@router.get("/don")
+def list_don_nghi_viec(
+    current_user: TaiKhoan = Depends(get_current_user),
+    session: Session = Depends(get_session),
+):
+    data = NghiViecService(session).list_don(current_user)
+    return api_response(data=data, message="Lấy danh sách đơn nghỉ việc thành công")
+
+
 @router.post("/don")
 def create_don_nghi_viec(
     payload: DonNghiViecCreate,

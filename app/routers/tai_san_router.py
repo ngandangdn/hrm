@@ -11,6 +11,24 @@ from app.services.tai_san_service import TaiSanService
 router = APIRouter(prefix="/api/tai-san", tags=["Tai san"])
 
 
+@router.get("")
+def list_tai_san(
+    current_user: TaiKhoan = Depends(get_current_user),
+    session: Session = Depends(get_session),
+):
+    data = TaiSanService(session).list_tai_san(current_user)
+    return api_response(data=data, message="Lấy danh sách tài sản thành công")
+
+
+@router.get("/cua-toi")
+def list_tai_san_cua_toi(
+    current_user: TaiKhoan = Depends(get_current_user),
+    session: Session = Depends(get_session),
+):
+    data = TaiSanService(session).list_tai_san_cua_toi(current_user)
+    return api_response(data=data, message="Lấy danh sách tài sản cá nhân thành công")
+
+
 @router.post("/cap-phat")
 def cap_phat_tai_san(
     payload: CapPhatRequest,

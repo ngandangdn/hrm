@@ -11,7 +11,7 @@ class Settings:
     ENVIRONMENT: str = getenv("ENVIRONMENT", "dev")
     DB_URL: str = getenv(
         "DB_URL",
-        "mysql+pymysql://root:password@localhost:3306/datn1",
+        "mysql+pymysql://root:password@localhost:3306/datn_hrm0",
     )
     JWT_SECRET: str = getenv("JWT_SECRET", "change-this-secret-in-env")
     JWT_ALGORITHM: str = getenv("JWT_ALGORITHM", "HS256")

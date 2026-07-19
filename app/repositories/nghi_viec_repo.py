@@ -35,6 +35,13 @@ class NghiViecRepository:
     def get_don(self, id_don: str) -> DonNghiViec | None:
         return self.session.get(DonNghiViec, id_don)
 
+    def list_don(self, id_nhan_vien: str | None = None) -> list[DonNghiViec]:
+        statement = select(DonNghiViec)
+        if id_nhan_vien:
+            statement = statement.where(DonNghiViec.id_NhanVien == id_nhan_vien)
+        statement = statement.order_by(DonNghiViec.ngayTao.desc())
+        return list(self.session.exec(statement).all())
+
     def get_quyet_dinh(self, id_quyet_dinh: str) -> QuyetDinhNghiViec | None:
         return self.session.get(QuyetDinhNghiViec, id_quyet_dinh)
 

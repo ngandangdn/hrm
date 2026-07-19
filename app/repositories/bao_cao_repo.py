@@ -33,6 +33,7 @@ class BaoCaoRepository:
             item
             for item in hop_dong
             if item.ngayKetThuc is not None and filters.tu_ngay <= item.ngayKetThuc <= soon_limit
+            and item.trangThaiHopDong == 1
         ]
         resignations = [
             item
@@ -98,8 +99,8 @@ class BaoCaoRepository:
         lich_hop = list(self.session.exec(select(LichHop)).all())
         phong_hop = list(self.session.exec(select(PhongHop)).all())
 
-        assets_in_use = sum(1 for item in tai_san if item.trangThai == 0)
-        assets_ready = sum(1 for item in tai_san if item.trangThai == 1)
+        assets_in_use = sum(1 for item in tai_san if item.trangThai == 1)
+        assets_ready = sum(1 for item in tai_san if item.trangThai == 0)
         meetings_in_period = [
             item
             for item in lich_hop

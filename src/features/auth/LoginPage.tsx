@@ -36,6 +36,7 @@ export default function LoginPage() {
   const forgotMutation = useForgotPassword();
   const verifyOtpMutation = useVerifyOtp();
   const resetPasswordMutation = useResetPassword();
+  const forgotPending = forgotMutation.isPending || verifyOtpMutation.isPending || resetPasswordMutation.isPending;
 
   const onLogin = async (values: LoginFormValues) => {
     try {
@@ -91,7 +92,7 @@ export default function LoginPage() {
           <Text className="!text-base !text-[#3d344c]">Hệ thống Quản trị Nhân sự</Text>
         </div>
 
-        <Form layout="vertical" requiredMark={false} onFinish={onLogin}>
+        <Form layout="vertical" requiredMark={false} disabled={loginMutation.isPending} onFinish={onLogin}>
           <Form.Item
             label={<span className="text-base text-hicas-text">Email / Tên đăng nhập</span>}
             name="email"
@@ -124,7 +125,7 @@ export default function LoginPage() {
             </Button>
           </div>
 
-          <Button type="primary" htmlType="submit" block loading={loginMutation.isPending}>
+          <Button type="primary" htmlType="submit" block loading={loginMutation.isPending} disabled={loginMutation.isPending}>
             Đăng nhập
           </Button>
         </Form>
@@ -135,12 +136,11 @@ export default function LoginPage() {
         open={forgotOpen}
         okText={forgotStep === 1 ? 'Gửi OTP' : 'Đổi mật khẩu'}
         cancelText="Hủy"
-        confirmLoading={forgotMutation.isPending || verifyOtpMutation.isPending || resetPasswordMutation.isPending}
+        confirmLoading={forgotPending}
         onOk={forgotStep === 1 ? requestOtp : resetPassword}
         onCancel={() => setForgotOpen(false)}
       >
-        {/* Thiết kế modal quên mật khẩu chưa có file riêng; dùng AntD tối giản và token theme chung. */}
-        <Form form={forgotForm} layout="vertical" requiredMark={false}>
+        <Form form={forgotForm} layout="vertical" requiredMark={false} disabled={forgotPending}>
           <Form.Item
             label="Email"
             name="email"
